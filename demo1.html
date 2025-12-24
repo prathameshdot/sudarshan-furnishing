@@ -424,7 +424,7 @@ document.getElementById("requestForm").addEventListener("submit", function(e){
         details: '',
         time: new Date().toLocaleString()
     };
-    fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+    fetch('/api/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -897,7 +897,7 @@ form.addEventListener("submit", e => {
       details: '',
       time: new Date().toLocaleString()
   };
-  fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+  fetch('/api/send-email', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -1142,7 +1142,7 @@ form.addEventListener("submit", e => {
         details: formData.get('details') || '',
         time: new Date().toLocaleString()
     };
-    fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+    fetch('/api/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1516,7 +1516,7 @@ form.addEventListener("submit", e => {
                   details: '',
                   time: new Date().toLocaleString()
               };
-              fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+              fetch('/api/send-email', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'
@@ -1684,7 +1684,7 @@ form.addEventListener("submit", e => {
         details: '',
         time: new Date().toLocaleString()
     };
-    fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+    fetch('/api/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
