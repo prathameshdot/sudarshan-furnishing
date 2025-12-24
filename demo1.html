@@ -374,10 +374,10 @@ body{
     <p>Fill the form & we’ll contact you shortly.</p>
 
     <form id="requestForm">
-      <input type="text" placeholder="Your Name" required>
-      <input type="tel" placeholder="Phone Number" required>
-      <input type="email" placeholder="Email Address">
-      <textarea placeholder="Your Requirements"></textarea>
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="tel" name="phone" placeholder="Phone Number" required>
+      <input type="email" name="email" placeholder="Email Address">
+      <textarea name="requirements" placeholder="Your Requirements"></textarea>
 
       <button type="submit" class="btn-popup">Submit Request</button>
     </form>
@@ -395,7 +395,7 @@ body{
     <h3>Form submitted successfully! 🎉</h3>
     <p class="muted">We’ll get back to you as soon as possible.</p>
 
-    <button class="btn-popup" onclick="closePopup('thankPopup')">Okay</button>
+    <button class="btn-popup" type="button" onclick="closePopup('thankPopup')">Okay</button>
 
   </div>
 </div>
@@ -413,7 +413,27 @@ function closePopup(id){
 
 document.getElementById("requestForm").addEventListener("submit", function(e){
     e.preventDefault();
-
+    const formData = new FormData(e.target);
+    const params = {
+        name: formData.get('name') || '',
+        phone: formData.get('phone') || '',
+        email: formData.get('email') || '',
+        company: '',
+        message: '',
+        requirements: formData.get('requirements') || '',
+        details: '',
+        time: new Date().toLocaleString()
+    };
+    fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+    .then(response => response.json())
+    .then(data => alert('Emails sent successfully!'))
+    .catch(err => alert('Error sending emails: ' + err.message));
     document.getElementById("formPopup").style.display = "none";
     document.getElementById("thankPopup").style.display = "flex";
 });
@@ -465,6 +485,12 @@ setInterval(() => {
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- EmailJS -->
+  <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+  <script>
+    emailjs.init('Js32cE2Nzz_fqdabk');
+  </script>
 
   <style>
     :root{
@@ -739,10 +765,10 @@ setInterval(() => {
     <p class="muted">Share your details and we’ll get back shortly.</p>
 
     <form id="consultationForm">
-      <input type="text" placeholder="Your Name" required>
-      <input type="tel" placeholder="Phone Number" required>
-      <input type="email" placeholder="Email Address">
-      <textarea placeholder="Product / Requirements"></textarea>
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="tel" name="phone" placeholder="Phone Number" required>
+      <input type="email" name="email" placeholder="Email Address">
+      <textarea name="requirements" placeholder="Product / Requirements"></textarea>
       <button type="submit" class="btn">Submit Request</button>
     </form>
   </div>
@@ -752,7 +778,7 @@ setInterval(() => {
     <button class="popup-close" onclick="closeSuccess()">×</button>
     <h3>Form submitted successfully! 🎉</h3>
     <p class="muted">We’ll get back to you as soon as possible.</p>
-    <button class="btn" onclick="closeSuccess()">Okay</button>
+    <button class="btn" type="button" onclick="closeSuccess()">Okay</button>
   </div>
 </div>
 
@@ -860,6 +886,27 @@ successPopup.addEventListener("click", e => {
 // Form submit
 form.addEventListener("submit", e => {
   e.preventDefault();
+  const formData = new FormData(e.target);
+  const params = {
+      name: formData.get('name') || '',
+      phone: formData.get('phone') || '',
+      email: formData.get('email') || '',
+      company: '',
+      message: '',
+      requirements: formData.get('requirements') || '',
+      details: '',
+      time: new Date().toLocaleString()
+  };
+  fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(params)
+  })
+  .then(response => response.json())
+  .then(data => alert('Emails sent successfully!'))
+  .catch(err => alert('Error sending emails: ' + err.message));
   closePopup();
   form.reset();
   setTimeout(openSuccess, 10);
@@ -985,12 +1032,23 @@ form.addEventListener("submit", e => {
       Speak with our experts to find the perfect drapes for your space.
     </p>
 
-    <input type="text" placeholder="Full name">
-    <input type="email" placeholder="Business email">
-    <input type="tel" placeholder="Contact number">
-    <textarea rows="4" placeholder="Project details / space type"></textarea>
+    <form id="consultationPopupForm">
+    <input type="text" name="name" placeholder="Full name">
+    <input type="email" name="email" placeholder="Business email">
+    <input type="tel" name="phone" placeholder="Contact number">
+    <textarea name="details" rows="4" placeholder="Project details / space type"></textarea>
 
     <button class="btn" type="submit">Request Consultation</button>
+    </form>
+  </div>
+</div>
+
+<div id="consultationThankPopup" class="popup-overlay">
+  <div class="popup-box" style="text-align:center;">
+    <button class="popup-close" onclick="closeConsultationThankPopup()">×</button>
+    <h3>Form submitted successfully! 🎉</h3>
+    <p class="muted">We’ll get back to you as soon as possible.</p>
+    <button class="btn-popup" type="button" onclick="closeConsultationThankPopup()">Okay</button>
   </div>
 </div>
 
@@ -1066,6 +1124,43 @@ form.addEventListener("submit", e => {
         closeConsultationPopup();
       }
     });
+
+  function closeConsultationThankPopup(){
+    document.getElementById("consultationThankPopup").style.display = "none";
+  }
+
+  document.getElementById("consultationPopupForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const params = {
+        name: formData.get('name') || '',
+        phone: formData.get('phone') || '',
+        email: formData.get('email') || '',
+        company: '',
+        message: '',
+        requirements: '',
+        details: formData.get('details') || '',
+        time: new Date().toLocaleString()
+    };
+    fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+    .then(response => response.json())
+    .then(data => alert('Emails sent successfully!'))
+    .catch(err => alert('Error sending emails: ' + err.message));
+    closeConsultationPopup();
+    document.getElementById("consultationThankPopup").style.display = "flex";
+  });
+
+  document.getElementById("consultationThankPopup").addEventListener("click", function(e){
+    if(e.target === this){
+        closeConsultationThankPopup();
+    }
+  });
 </script>
 
 
@@ -1379,10 +1474,10 @@ form.addEventListener("submit", e => {
       <!-- LEFT: CONTACT FORM -->
       <div class="card form">
         <form id="contactForm">
-          <input type="text" placeholder="Full name" required>
-          <input type="email" placeholder="Business email" required>
-          <input type="text" placeholder="Company">
-          <textarea rows="5" placeholder="Message & brief outline"></textarea>
+          <input type="text" name="name" placeholder="Full name" required>
+          <input type="email" name="email" placeholder="Business email" required>
+          <input type="text" name="company" placeholder="Company">
+          <textarea name="message" rows="5" placeholder="Message & brief outline"></textarea>
           <button type="submit" class="btn">Send enquiry</button>
         </form>
       </div>
@@ -1391,7 +1486,7 @@ form.addEventListener("submit", e => {
           <button class="popup-close" onclick="closeSuccess()">×</button>
           <h3>Form submitted successfully! 🎉</h3>
           <p class="muted">We’ll get back to you as soon as possible.</p>
-          <button class="btn" style="margin-top:16px;" onclick="closeSuccess()">Okay</button>
+          <button class="btn" type="button" style="margin-top:16px;" onclick="closeSuccess()">Okay</button>
         </div>
       </div>
       <script>
@@ -1409,9 +1504,30 @@ form.addEventListener("submit", e => {
             };
 
             contactForm.addEventListener("submit", function (e) {
-              e.preventDefault();      // stop page reload
-              contactForm.reset();    // clear form
-              openSuccess();           // show success popup
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const params = {
+                  name: formData.get('name') || '',
+                  phone: '',
+                  email: formData.get('email') || '',
+                  company: formData.get('company') || '',
+                  message: formData.get('message') || '',
+                  requirements: '',
+                  details: '',
+                  time: new Date().toLocaleString()
+              };
+              fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+              })
+              .then(response => response.json())
+              .then(data => alert('Emails sent successfully!'))
+              .catch(err => alert('Error sending emails: ' + err.message));
+              contactForm.reset();
+              openSuccess();
             });
 
             successPopup.addEventListener("click", function (e) {
@@ -1460,12 +1576,23 @@ form.addEventListener("submit", e => {
       Book a visit to our showroom. Our team will confirm shortly.
     </p>
 
-    <input type="text" placeholder="Full name">
-    <input type="email" placeholder="Business email">
-    <input type="tel" placeholder="Contact number">
-    <textarea rows="4" placeholder="Preferred date & message"></textarea>
+    <form id="appointmentForm">
+    <input type="text" name="name" placeholder="Full name">
+    <input type="email" name="email" placeholder="Business email">
+    <input type="tel" name="phone" placeholder="Contact number">
+    <textarea name="message" rows="4" placeholder="Preferred date & message"></textarea>
 
-    <button class="btn">Submit Request</button>
+    <button type="submit" class="btn">Submit Request</button>
+    </form>
+  </div>
+</div>
+
+<div id="appointmentThankPopup" class="popup-overlay">
+  <div class="popup-card" style="text-align:center;">
+    <button class="popup-close" onclick="closeAppointmentThankPopup()">×</button>
+    <h3>Form submitted successfully! 🎉</h3>
+    <p class="muted">We’ll get back to you as soon as possible.</p>
+    <button class="btn" type="button" onclick="closeAppointmentThankPopup()">Okay</button>
   </div>
 </div>
 
@@ -1539,6 +1666,43 @@ form.addEventListener("submit", e => {
     .addEventListener("click", function (e) {
       if (e.target === this) closeAppointmentPopup();
     });
+
+  function closeAppointmentThankPopup(){
+    document.getElementById("appointmentThankPopup").style.display = "none";
+  }
+
+  document.getElementById("appointmentForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const params = {
+        name: formData.get('name') || '',
+        phone: formData.get('phone') || '',
+        email: formData.get('email') || '',
+        company: '',
+        message: formData.get('message') || '',
+        requirements: '',
+        details: '',
+        time: new Date().toLocaleString()
+    };
+    fetch('https://sudarshan-furnishing-pi.vercel.app/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+    .then(response => response.json())
+    .then(data => alert('Emails sent successfully!'))
+    .catch(err => alert('Error sending emails: ' + err.message));
+    closeAppointmentPopup();
+    document.getElementById("appointmentThankPopup").style.display = "flex";
+  });
+
+  document.getElementById("appointmentThankPopup").addEventListener("click", function(e){
+    if(e.target === this){
+        closeAppointmentThankPopup();
+    }
+  });
 </script>
 
 
